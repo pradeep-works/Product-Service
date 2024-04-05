@@ -16,7 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from retest_app.views import router as retest_router
+from users.views import router as users_router
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 ]
+
+urlpatterns += retest_router.urls
+urlpatterns += users_router.urls
