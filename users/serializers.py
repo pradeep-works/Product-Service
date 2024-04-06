@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
 
-from users.models import User
+from users.models import User, UserGroup
 
 class BaseSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,6 +9,9 @@ class BaseSerializer(serializers.ModelSerializer):
         fields_read_only = ['id', 'created_at', 'updated_at']
 
 class UserSerializer(BaseSerializer):
+    '''
+    Serializer for User model
+    '''
     class Meta:
         model = User
         fields = '__all__'
@@ -21,3 +24,11 @@ class UserSerializer(BaseSerializer):
         if password is not None:
             attrs['password'] = make_password(password)
         return super().validate(attrs)
+    
+class UserGroupSerializer(BaseSerializer):
+    '''
+    Serializer for User group model
+    '''
+    class Meta:
+        model = UserGroup
+        fields = BaseSerializer.Meta.fields + ['name']

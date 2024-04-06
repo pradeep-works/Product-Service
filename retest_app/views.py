@@ -14,6 +14,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Retr
     '''
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_permissions(self):
         if self.request.method.upper() in ['HEAD', 'OPTIONS']:
@@ -22,6 +23,9 @@ class ProductViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Retr
             return [IsAuthenticated()]
         if self.request.method.upper() in ['POST', 'PATCH', 'PUT', 'DELETE']:
             return [AllowAdminOnly()]
+    
+    def get_serializer_class(self):
+        return super().get_serializer_class()
 
 router = DefaultRouter()
 router.register("product", ProductViewSet, "product")
