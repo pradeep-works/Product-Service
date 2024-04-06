@@ -1,11 +1,11 @@
 from rest_framework.viewsets import GenericViewSet
 from rest_framework import mixins
-from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.routers import DefaultRouter
 
 from retest_app.models import Product
 from retest_app.serializers import ProductSerializer
+from retest_app.permissions import AllowAdminOnly
 
 class ProductViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.RetrieveModelMixin,\
                      mixins.UpdateModelMixin, GenericViewSet):
@@ -14,6 +14,7 @@ class ProductViewSet(mixins.ListModelMixin, mixins.CreateModelMixin, mixins.Retr
     '''
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [AllowAdminOnly]
 
 router = DefaultRouter()
 router.register("product", ProductViewSet, "product")
